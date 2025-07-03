@@ -38,7 +38,7 @@ const HeroSection = () => (
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
             <Link href="/recursos/diagnostico">
-              <CTAButton size="xl" glow>
+              <CTAButton variant="primary" size="xl" glow>
                 Diagnóstico Gratuito de Resiliência
               </CTAButton>
             </Link>
