@@ -33,6 +33,12 @@ jobs:
       - name: Build static Next.js site
         run: npm run build:static
       
+      - name: Garante pasta /out
+        run: mkdir -p out
+      
+      - name: Debug - lista arquivos gerados
+        run: ls -l out
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
