@@ -9,7 +9,7 @@ import type { Lead, ComboInterest, Testimonial, CaseStudy } from '@/types';
 export function calculateLeadScore(_leadData: Partial<Lead>): number {
   // Implementação temporária
   return 50;
-}
+  }
 
 export const leadService = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

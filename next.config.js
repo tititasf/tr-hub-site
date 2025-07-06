@@ -4,11 +4,11 @@ const nextConfig = {
   ...(process.env.DOCKER_BUILD === 'true' ? {
     output: 'standalone',
   } : {
-    output: 'export',
-    trailingSlash: true,
-    images: {
-      unoptimized: true
-    },
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true
+  },
   }),
   
   experimental: {

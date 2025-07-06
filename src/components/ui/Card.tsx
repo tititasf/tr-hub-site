@@ -238,17 +238,17 @@ export const PricingCard: React.FC<{
         </button>
       </Link>
     ) : (
-      <button
-        className={clsx(
-          'w-full btn-base btn-lg',
-          {
-            'btn-primary': recommended || popular,
-            'btn-outline': !recommended && !popular
-          }
-        )}
-      >
-        {cta}
-      </button>
+    <button
+      className={clsx(
+        'w-full btn-base btn-lg',
+        {
+          'btn-primary': recommended || popular,
+          'btn-outline': !recommended && !popular
+        }
+      )}
+    >
+      {cta}
+    </button>
     )}
   </Card>
 );
