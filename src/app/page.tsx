@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button, CTAButton } from '@/components/ui/Button';
 import { Card, FeatureCard, TestimonialCard, StatsCard, PricingCard } from '@/components/ui/Card';
-import { clsx } from 'clsx';
+// clsx removido pois não está sendo usado
 
 // Hero Section Component
 const HeroSection = () => (
@@ -16,9 +16,9 @@ const HeroSection = () => (
         {/* Left Column - Content */}
         <div className="text-center lg:text-left">
           <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-dark-navy mb-6 text-balance">
-            "Fim do Jogo de{' '}
+            &ldquo;Fim do Jogo de{' '}
             <span className="gradient-text">Empurra-Empurra</span>{' '}
-            Tecnológico"
+            Tecnológico&rdquo;
           </h1>
           
           <p className="text-xl lg:text-2xl text-neutral-600 mb-8 max-w-2xl mx-auto lg:mx-0">
