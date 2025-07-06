@@ -1,0 +1,146 @@
+name: Docker Image CI/CD
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'site-trhub/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'site-trhub/**'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/trhub-site
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  test:
+    name: 🧪 Testes e Validação
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./site-trhub
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './site-trhub/package-lock.json'
+
+      - name: 📦 Instalar dependências
+        run: npm ci
+
+      - name: 🔍 Rodar type-check
+        run: npm run type-check
+
+      - name: 🎨 Rodar linter
+        run: npm run lint
+
+      - name: 🏗️ Testar build
+        run: npm run build
+
+  build:
+    name: 🐳 Build e Push Docker
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Login no Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏷️ Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: 🏗️ Build e Push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./site-trhub
+          file: ./site-trhub/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_ENV=production
+            NEXT_TELEMETRY_DISABLED=1
+
+  security:
+    name: 🔒 Análise de Segurança
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🔍 Rodar Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: 📊 Upload resultados para GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  deploy-staging:
+    name: 🚀 Deploy Staging
+    needs: [build, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    
+    steps:
+      - name: 🚀 Deploy para staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Adicione aqui seus comandos de deploy para staging
+
+  deploy-production:
+    name: 🚀 Deploy Produção
+    needs: [build, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+      - name: 🚀 Deploy para produção
+        run: |
+          echo "Deploying to production environment..."
+          # Adicione aqui seus comandos de deploy para produção
