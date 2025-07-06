@@ -39,8 +39,8 @@ jobs:
       - name: 🏗️ Testar build
         run: npm run build
 
-  build:
-    name: 🐳 Build e Push Docker
+  build-and-security:
+    name: 🐳 Build, Segurança e Push Docker
     needs: test
     runs-on: ubuntu-latest
     permissions:
@@ -75,12 +75,14 @@ jobs:
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: 🏗️ Build e Push
+      - name: 🏗️ Build Docker Image
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
+          push: false
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -89,20 +91,10 @@ jobs:
             NODE_ENV=production
             NEXT_TELEMETRY_DISABLED=1
 
-  security:
-    name: 🔒 Análise de Segurança
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
-    
-    steps:
-      - name: 📥 Checkout do código
-        uses: actions/checkout@v4
-
       - name: 🔍 Rodar Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          image-ref: ${{ steps.meta.outputs.tags }}
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
@@ -112,12 +104,25 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
+      - name: 🚀 Push para Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          build-args: |
+            NODE_ENV=production
+            NEXT_TELEMETRY_DISABLED=1
+
   deploy-staging:
     name: 🚀 Deploy Staging
-    needs: [build, security]
+    needs: [build-and-security]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
-    environment: staging
     
     steps:
       - name: 🚀 Deploy para staging
@@ -127,10 +132,9 @@ jobs:
 
   deploy-production:
     name: 🚀 Deploy Produção
-    needs: [build, security]
+    needs: [build-and-security]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    environment: production
     
     steps:
       - name: 🚀 Deploy para produção
