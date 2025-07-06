@@ -37,7 +37,7 @@ export interface ComboType {
 export interface ComboInterest {
   lead_id: string;
   combo: ComboType['id'];
-  customizations: Record<string, any>;
+  customizations: Record<string, unknown>;
   estimated_value: number;
   created_at: string;
 }
@@ -147,7 +147,7 @@ export interface ROICalculatorResults {
 
 export interface AnalyticsEvent {
   event_name: string;
-  parameters: Record<string, any>;
+  parameters: Record<string, unknown>;
   timestamp: string;
   user_id?: string;
   session_id: string;
@@ -223,7 +223,7 @@ export interface TooltipProps {
 // API RESPONSE TYPES
 // ===========================
 
-export interface APIResponse<T = any> {
+export interface APIResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -245,7 +245,7 @@ export interface PaginatedResponse<T> {
 
 export interface WebhookPayload {
   event: string;
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   timestamp: string;
   signature: string;
 }
@@ -282,7 +282,7 @@ export interface SEOData {
   canonical?: string;
   noindex?: boolean;
   nofollow?: boolean;
-  structuredData?: Record<string, any>;
+  structuredData?: Record<string, unknown>;
 }
 
 // ===========================
@@ -340,7 +340,7 @@ export type DeepPartial<T> = {
 export interface AppError {
   code: string;
   message: string;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
   timestamp: string;
   stack?: string;
 }
@@ -379,7 +379,7 @@ export interface FeatureFlag {
   enabled: boolean;
   description: string;
   rollout_percentage?: number;
-  conditions?: Record<string, any>;
+  conditions?: Record<string, unknown>;
 }
 
 // ===========================
@@ -395,7 +395,7 @@ export interface SupabaseConfig {
 export interface N8NWebhook {
   url: string;
   event: string;
-  payload: Record<string, any>;
+  payload: Record<string, unknown>;
   headers?: Record<string, string>;
 }
 

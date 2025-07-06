@@ -173,6 +173,7 @@ export const ButtonGroup: React.FC<{
   >
     {React.Children.map(children, (child, index) => {
       if (React.isValidElement(child)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return React.cloneElement(child as React.ReactElement<any>, {
           className: clsx(
             child.props.className,

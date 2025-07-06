@@ -120,7 +120,7 @@ const ProblemSection = () => {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-dark-navy mb-6">
-            "Sua empresa está perdendo dinheiro todos os dias"
+            &ldquo;Sua empresa está perdendo dinheiro todos os dias&rdquo;
           </h2>
           <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
             PMEs perdem em média <strong>R$ 3.500/mês</strong> com tecnologia fragmentada, 
@@ -230,7 +230,7 @@ const SolutionSection = () => {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-dark-navy mb-6">
-            "A Única Plataforma de Resiliência Operacional"
+            &ldquo;A Única Plataforma de Resiliência Operacional&rdquo;
           </h2>
           <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
             4 pilares integrados que trabalham juntos para transformar caos tecnológico 
@@ -322,7 +322,7 @@ const CombosSection = () => {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-dark-navy mb-6">
-            "Combos Integrados: Sua Escolha Estratégica"
+            &ldquo;Combos Integrados: Sua Escolha Estratégica&rdquo;
           </h2>
           <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
             Não vendemos produtos isolados. Oferecemos <strong>soluções integradas</strong> que 
@@ -387,7 +387,7 @@ const SocialProofSection = () => {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-dark-navy mb-6">
-            "Resultados Comprovados, Clientes Satisfeitos"
+            &ldquo;Resultados Comprovados, Clientes Satisfeitos&rdquo;
           </h2>
         </div>
 

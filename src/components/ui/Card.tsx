@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { clsx } from 'clsx';
 import type { CardProps } from '@/types';
 
@@ -87,14 +88,16 @@ export const TestimonialCard: React.FC<{
     </div>
     
     <blockquote className="text-lg text-neutral-700 mb-6">
-      "{quote}"
+      &ldquo;{quote}&rdquo;
     </blockquote>
     
     <div className="flex items-center">
       {photo ? (
-        <img
+        <Image
           src={photo}
           alt={author}
+          width={48}
+          height={48}
           className="w-12 h-12 rounded-full mr-4"
         />
       ) : (
