@@ -344,10 +344,7 @@ const CombosSection = () => {
               popular={combo.popular}
               recommended={combo.recommended}
               enterprise={combo.enterprise}
-              onSelect={() => {
-                // Analytics tracking would go here
-                window.location.href = '/combos';
-              }}
+              // Removido onSelect para compatibilidade com export estático
             />
           ))}
         </div>

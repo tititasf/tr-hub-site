@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { clsx } from 'clsx';
 import type { CardProps } from '@/types';
 
@@ -148,7 +149,7 @@ export const PricingCard: React.FC<{
   popular?: boolean;
   recommended?: boolean;
   enterprise?: boolean;
-  onSelect?: () => void;
+  href?: string;
   className?: string;
 }> = ({ 
   tier, 
@@ -161,7 +162,7 @@ export const PricingCard: React.FC<{
   popular, 
   recommended, 
   enterprise,
-  onSelect,
+  href,
   className 
 }) => (
   <Card 
@@ -219,18 +220,33 @@ export const PricingCard: React.FC<{
       ))}
     </ul>
     
-    <button
-      onClick={onSelect}
-      className={clsx(
-        'w-full btn-base btn-lg',
-        {
-          'btn-primary': recommended || popular,
-          'btn-outline': !recommended && !popular
-        }
-      )}
-    >
-      {cta}
-    </button>
+    {href ? (
+      <Link href={href}>
+        <button
+          className={clsx(
+            'w-full btn-base btn-lg',
+            {
+              'btn-primary': recommended || popular,
+              'btn-outline': !recommended && !popular
+            }
+          )}
+        >
+          {cta}
+        </button>
+      </Link>
+    ) : (
+      <button
+        className={clsx(
+          'w-full btn-base btn-lg',
+          {
+            'btn-primary': recommended || popular,
+            'btn-outline': !recommended && !popular
+          }
+        )}
+      >
+        {cta}
+      </button>
+    )}
   </Card>
 );
 

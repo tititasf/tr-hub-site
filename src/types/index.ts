@@ -412,7 +412,6 @@ export interface EmailConfig {
 
 export type {
   // Re-export React types for convenience
-  React,
   ReactNode,
   ReactElement,
   FC,

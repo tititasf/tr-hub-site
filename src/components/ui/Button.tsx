@@ -107,11 +107,11 @@ export const GhostButton: React.FC<Omit<ButtonProps, 'variant'>> = (props) => (
 export const CTAButton: React.FC<ButtonProps & { glow?: boolean }> = ({ 
   glow = false, 
   className,
+  variant,
+  size,
   ...props 
 }) => (
   <Button
-    variant="primary"
-    size="xl"
     className={clsx(
       'transform transition-all duration-300',
       'hover:scale-105 hover:shadow-2xl',
@@ -120,6 +120,8 @@ export const CTAButton: React.FC<ButtonProps & { glow?: boolean }> = ({
       },
       className
     )}
+    variant={variant || "primary"}
+    size={size || "xl"}
     {...props}
   />
 );
@@ -183,7 +185,6 @@ export const ButtonGroup: React.FC<{
               'last:border-r': orientation === 'horizontal',
               
               // Vertical styling
-              'rounded-none': orientation === 'vertical',
               'border-b-0': orientation === 'vertical' && index !== React.Children.count(children) - 1,
               'first:rounded-t-lg': orientation === 'vertical',
               'last:rounded-b-lg': orientation === 'vertical',

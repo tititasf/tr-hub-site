@@ -3,12 +3,8 @@ name: Docker Image CI/CD
 on:
   push:
     branches: [ "main", "develop" ]
-    paths:
-      - 'site-trhub/**'
   pull_request:
     branches: [ "main" ]
-    paths:
-      - 'site-trhub/**'
 
 env:
   REGISTRY: ghcr.io
@@ -19,9 +15,6 @@ jobs:
   test:
     name: 🧪 Testes e Validação
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./site-trhub
 
     steps:
       - name: 📥 Checkout do código
@@ -32,7 +25,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: './site-trhub/package-lock.json'
+          cache-dependency-path: './package-lock.json'
 
       - name: 📦 Instalar dependências
         run: npm ci
@@ -85,8 +78,8 @@ jobs:
       - name: 🏗️ Build e Push
         uses: docker/build-push-action@v5
         with:
-          context: ./site-trhub
-          file: ./site-trhub/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -35,9 +35,7 @@ export default function CombosPage() {
             popular={combo.popular}
             recommended={combo.recommended}
             enterprise={combo.enterprise}
-            onSelect={() => {
-              window.location.href = `/combos/${combo.id}`;
-            }}
+            // Removido onSelect para compatibilidade com export estático
           />
         ))}
       </div>

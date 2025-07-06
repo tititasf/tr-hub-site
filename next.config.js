@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  trailingSlash: true,
-  images: {
-    unoptimized: true
-  },
+  // Configuração condicional baseada no ambiente
+  ...(process.env.DOCKER_BUILD === 'true' ? {
+    output: 'standalone',
+  } : {
+    output: 'export',
+    trailingSlash: true,
+    images: {
+      unoptimized: true
+    },
+  }),
   
   experimental: {
     optimizePackageImports: ['@heroicons/react', '@headlessui/react', 'framer-motion']

@@ -40,10 +40,7 @@ export default function ComboDetailsPage({ params }: Props) {
           popular={combo.popular}
           recommended={combo.recommended}
           enterprise={combo.enterprise}
-          onSelect={() => {
-            // TODO: Link para formulário de interesse
-            window.location.href = '/recursos/diagnostico';
-          }}
+          // Removido onSelect para compatibilidade com export estático
         />
 
         <div className="text-center mt-12">
